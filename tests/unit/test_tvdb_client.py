@@ -4,9 +4,9 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from thetvdb_mcp_server.cache import tvdb_cache
-from thetvdb_mcp_server.rate_limiter import AsyncRateLimiter
-from thetvdb_mcp_server.tvdb_client import TvdbClient
+from tvdb_mcp_server.cache import tvdb_cache
+from tvdb_mcp_server.rate_limiter import AsyncRateLimiter
+from tvdb_mcp_server.tvdb_client import TvdbClient
 
 
 def make_mock_tvdb():
@@ -54,7 +54,7 @@ def mock_tvdb():
 @pytest.fixture
 def client(mock_tvdb):
     """TvdbClient fixture with mocked TVDB backend."""
-    with patch("thetvdb_mcp_server.tvdb_client.tvdb_v4_official.TVDB", return_value=mock_tvdb):
+    with patch("tvdb_mcp_server.tvdb_client.tvdb_v4_official.TVDB", return_value=mock_tvdb):
         return TvdbClient("test-key", None, AsyncRateLimiter())
 
 

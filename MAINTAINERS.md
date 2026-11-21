@@ -36,18 +36,12 @@ uv run pytest tests/unit/
 ### Locally
 
 ```bash
-uv run python -m thetvdb_mcp_server
+uv run python -m tvdb_mcp_server
 ```
 
 Pass `--config <path>` to use a non-default config file location.
 
 ### Via Docker
-
-Build the image:
-
-```bash
-docker build -t thetvdb-mcp-server .
-```
 
 Start the server (requires `config.toml` in the current directory):
 

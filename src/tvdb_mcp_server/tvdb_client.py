@@ -12,8 +12,8 @@ from typing import Any
 
 import tvdb_v4_official
 
-from thetvdb_mcp_server.cache import tvdb_cache
-from thetvdb_mcp_server.rate_limiter import AsyncRateLimiter
+from tvdb_mcp_server.cache import tvdb_cache
+from tvdb_mcp_server.rate_limiter import AsyncRateLimiter
 
 _logger = logging.getLogger(__name__)
 

@@ -4,7 +4,7 @@ import time
 
 import pytest
 
-from thetvdb_mcp_server.rate_limiter import AsyncRateLimiter
+from tvdb_mcp_server.rate_limiter import AsyncRateLimiter
 
 
 @pytest.mark.asyncio

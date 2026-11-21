@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """Generate JSON output files for all TVDB MCP tools for testing/development.
 
-This script calls every tool in src/thetvdb_mcp_server/tools.py with known-good
+This script calls every tool in src/tvdb_mcp_server/tools.py with known-good
 IDs, saves each response to a well-named JSON file in tmp_test_output/, and
 reports errors. It also exercises "options off" vs "options on" variants for
 extended endpoints.
@@ -23,8 +23,8 @@ from typing import Any
 # Add project src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../src"))
 
-from thetvdb_mcp_server import tools
-from thetvdb_mcp_server.config import AppConfig, LoggingConfig, ServerConfig, TvdbConfig
+from tvdb_mcp_server import tools
+from tvdb_mcp_server.config import AppConfig, LoggingConfig, ServerConfig, TvdbConfig
 
 OUTPUT_DIR = "tmp_test_output"
 errors = []

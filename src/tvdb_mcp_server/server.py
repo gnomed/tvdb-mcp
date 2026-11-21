@@ -1,12 +1,12 @@
-"""FastMCP server entrypoint for the thetvdb-mcp-server server.
+"""FastMCP server entrypoint for the tvdb-mcp server.
 
 Run with::
 
-    uv run python -m thetvdb_mcp_server
+    uv run python -m tvdb_mcp_server
 
 or via the installed script::
 
-    thetvdb-mcp-server
+    tvdb-mcp
 """
 
 import argparse
@@ -15,10 +15,10 @@ from pathlib import Path
 import fastmcp
 from fastmcp.server.lifespan import lifespan
 
-from thetvdb_mcp_server.cache import tvdb_cache
-from thetvdb_mcp_server.config import load_config
-from thetvdb_mcp_server.logging import make_logger
-from thetvdb_mcp_server.tools import (
+from tvdb_mcp_server.cache import tvdb_cache
+from tvdb_mcp_server.config import load_config
+from tvdb_mcp_server.logging import make_logger
+from tvdb_mcp_server.tools import (
     init_tools,
     tvdb_get_artwork,
     tvdb_get_episode,
@@ -41,7 +41,7 @@ async def cache_lifespan(server):
     await tvdb_cache.stop()
 
 
-mcp = fastmcp.FastMCP("thetvdb-mcp-server", lifespan=cache_lifespan)
+mcp = fastmcp.FastMCP("tvdb-mcp", lifespan=cache_lifespan)
 
 # Register all 10 tools
 mcp.tool(name="tvdb_get_movie")(tvdb_get_movie)
@@ -58,7 +58,7 @@ mcp.tool(name="tvdb_get_series_episodes")(tvdb_get_series_episodes)
 
 def main() -> None:
     """Parse CLI arguments, load configuration, and start the MCP server."""
-    parser = argparse.ArgumentParser(description="thetvdb-mcp-server MCP server")
+    parser = argparse.ArgumentParser(description="tvdb-mcp MCP server")
     parser.add_argument(
         "--config",
         type=Path,
@@ -72,7 +72,7 @@ def main() -> None:
     init_tools(config)
 
     logger.info(
-        "Starting thetvdb-mcp-server",
+        "Starting tvdb-mcp",
         host=config.server.host,
         port=config.server.port,
     )

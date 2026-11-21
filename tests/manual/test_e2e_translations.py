@@ -24,8 +24,8 @@ import sys
 # Add project src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../src"))
 
-from thetvdb_mcp_server.rate_limiter import tvdb_rate_limiter
-from thetvdb_mcp_server.tvdb_client import TvdbClient
+from tvdb_mcp_server.rate_limiter import tvdb_rate_limiter
+from tvdb_mcp_server.tvdb_client import TvdbClient
 
 errors = []
 
@@ -54,16 +54,6 @@ async def run_tests():
     print("Testing TVDB API integration with result_language='eng'")
     print(f"API key: {api_key[:4]}...{api_key[-4:]}")
     print()
-
-    # Test get_series
-    print("Testing get_series (ID: 362696)...")
-    try:
-        result = await client.get_series(362696)
-        check_record(result, "get_series")
-        print(f"  OK (name: {result.get('name', 'N/A')})")
-    except Exception as e:
-        errors.append(f"get_series: {e}")
-        print(f"  FAILED: {e}")
 
     # Test get_series_extended
     print("Testing get_series_extended (ID: 362696)...")
@@ -109,16 +99,6 @@ async def run_tests():
         errors.append(f"search: {e}")
         print(f"  FAILED: {e}")
 
-    # Test get_movie
-    print("Testing get_movie (ID: 125759)...")
-    try:
-        result = await client.get_movie(125759)
-        check_record(result, "get_movie")
-        print(f"  OK (name: {result.get('name', 'N/A')})")
-    except Exception as e:
-        errors.append(f"get_movie: {e}")
-        print(f"  FAILED: {e}")
-
     # Test get_movie_extended
     print("Testing get_movie_extended (ID: 125759)...")
     try:
@@ -147,16 +127,6 @@ async def run_tests():
         if episodes:
             ep_id = episodes[0]["id"]
             print(f"  Found episode ID: {ep_id}")
-
-            # Test get_episode
-            print(f"Testing get_episode (ID: {ep_id})...")
-            try:
-                result = await client.get_episode(ep_id)
-                check_record(result, "get_episode")
-                print(f"  OK (name: {result.get('name', 'N/A')})")
-            except Exception as e:
-                errors.append(f"get_episode: {e}")
-                print(f"  FAILED: {e}")
 
             # Test get_episode_extended
             print(f"Testing get_episode_extended (ID: {ep_id})...")

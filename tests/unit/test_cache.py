@@ -4,7 +4,7 @@ import time
 
 import pytest
 
-from thetvdb_mcp_server.cache import TtlCache
+from tvdb_mcp_server.cache import TtlCache
 
 
 @pytest.fixture

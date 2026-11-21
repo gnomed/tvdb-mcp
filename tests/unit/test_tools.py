@@ -4,8 +4,8 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from thetvdb_mcp_server.config import AppConfig, LoggingConfig, ServerConfig, TvdbConfig
-from thetvdb_mcp_server.tools import (
+from tvdb_mcp_server.config import AppConfig, LoggingConfig, ServerConfig, TvdbConfig
+from tvdb_mcp_server.tools import (
     init_tools,
     tvdb_get_artwork,
     tvdb_get_episode,
@@ -79,7 +79,7 @@ def mock_client():
 @pytest.fixture
 def patched_tools(mock_client):
     """Patch tools module to use mock client."""
-    with patch("thetvdb_mcp_server.tools._client", mock_client):
+    with patch("tvdb_mcp_server.tools._client", mock_client):
         yield mock_client
 
 
@@ -595,7 +595,7 @@ async def test_get_person_extended_custom_params(patched_tools) -> None:
 
 def test_init_tools_creates_client() -> None:
     """init_tools creates and sets the shared client."""
-    with patch("thetvdb_mcp_server.tools.TvdbClient") as MockClient:
+    with patch("tvdb_mcp_server.tools.TvdbClient") as MockClient:
         mock_instance = MagicMock()
         MockClient.return_value = mock_instance
 
@@ -616,7 +616,7 @@ def test_init_tools_creates_client() -> None:
 @pytest.mark.asyncio
 async def test_search_raises_without_init() -> None:
     """tvdb_search raises RuntimeError if init_tools() not called."""
-    with patch("thetvdb_mcp_server.tools._client", None):
+    with patch("tvdb_mcp_server.tools._client", None):
         with pytest.raises(RuntimeError, match="init_tools"):
             await tvdb_search("test")
 
@@ -624,7 +624,7 @@ async def test_search_raises_without_init() -> None:
 @pytest.mark.asyncio
 async def test_episodes_raises_without_init() -> None:
     """tvdb_get_series_episodes raises RuntimeError if init_tools() not called."""
-    with patch("thetvdb_mcp_server.tools._client", None):
+    with patch("tvdb_mcp_server.tools._client", None):
         with pytest.raises(RuntimeError, match="init_tools"):
             await tvdb_get_series_episodes(78804, "default")
 
@@ -632,7 +632,7 @@ async def test_episodes_raises_without_init() -> None:
 @pytest.mark.asyncio
 async def test_get_series_extended_raises_without_init() -> None:
     """tvdb_get_series_extended raises RuntimeError if init_tools() not called."""
-    with patch("thetvdb_mcp_server.tools._client", None):
+    with patch("tvdb_mcp_server.tools._client", None):
         with pytest.raises(RuntimeError, match="init_tools"):
             await tvdb_get_series(78804)
 
@@ -640,7 +640,7 @@ async def test_get_series_extended_raises_without_init() -> None:
 @pytest.mark.asyncio
 async def test_get_series_by_slug_raises_without_init() -> None:
     """tvdb_get_series_by_slug raises RuntimeError if init_tools() not called."""
-    with patch("thetvdb_mcp_server.tools._client", None):
+    with patch("tvdb_mcp_server.tools._client", None):
         with pytest.raises(RuntimeError, match="init_tools"):
             await tvdb_get_series_by_slug("test")
 
@@ -648,7 +648,7 @@ async def test_get_series_by_slug_raises_without_init() -> None:
 @pytest.mark.asyncio
 async def test_get_season_extended_raises_without_init() -> None:
     """tvdb_get_season_extended raises RuntimeError if init_tools() not called."""
-    with patch("thetvdb_mcp_server.tools._client", None):
+    with patch("tvdb_mcp_server.tools._client", None):
         with pytest.raises(RuntimeError, match="init_tools"):
             await tvdb_get_season(12345)
 
@@ -656,7 +656,7 @@ async def test_get_season_extended_raises_without_init() -> None:
 @pytest.mark.asyncio
 async def test_get_artwork_extended_raises_without_init() -> None:
     """tvdb_get_artwork_extended raises RuntimeError if init_tools() not called."""
-    with patch("thetvdb_mcp_server.tools._client", None):
+    with patch("tvdb_mcp_server.tools._client", None):
         with pytest.raises(RuntimeError, match="init_tools"):
             await tvdb_get_artwork(67890)
 
@@ -664,7 +664,7 @@ async def test_get_artwork_extended_raises_without_init() -> None:
 @pytest.mark.asyncio
 async def test_get_episode_extended_raises_without_init() -> None:
     """tvdb_get_episode_extended raises RuntimeError if init_tools() not called."""
-    with patch("thetvdb_mcp_server.tools._client", None):
+    with patch("tvdb_mcp_server.tools._client", None):
         with pytest.raises(RuntimeError, match="init_tools"):
             await tvdb_get_episode(11111)
 
@@ -672,7 +672,7 @@ async def test_get_episode_extended_raises_without_init() -> None:
 @pytest.mark.asyncio
 async def test_get_person_extended_raises_without_init() -> None:
     """tvdb_get_person_extended raises RuntimeError if init_tools() not called."""
-    with patch("thetvdb_mcp_server.tools._client", None):
+    with patch("tvdb_mcp_server.tools._client", None):
         with pytest.raises(RuntimeError, match="init_tools"):
             await tvdb_get_person(22222)
 
@@ -685,7 +685,7 @@ async def test_get_person_extended_raises_without_init() -> None:
 @pytest.mark.asyncio
 async def test_get_movie_extended_raises_without_init() -> None:
     """tvdb_get_movie_extended raises RuntimeError if init_tools() not called."""
-    with patch("thetvdb_mcp_server.tools._client", None):
+    with patch("tvdb_mcp_server.tools._client", None):
         with pytest.raises(RuntimeError, match="init_tools"):
             await tvdb_get_movie(1000)
 
@@ -693,6 +693,6 @@ async def test_get_movie_extended_raises_without_init() -> None:
 @pytest.mark.asyncio
 async def test_get_movie_by_slug_raises_without_init() -> None:
     """tvdb_get_movie_by_slug raises RuntimeError if init_tools() not called."""
-    with patch("thetvdb_mcp_server.tools._client", None):
+    with patch("tvdb_mcp_server.tools._client", None):
         with pytest.raises(RuntimeError, match="init_tools"):
             await tvdb_get_movie_by_slug("test")

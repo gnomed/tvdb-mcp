@@ -1,4 +1,4 @@
-"""Structured logging for the thetvdb-mcp-server server.
+"""Structured logging for the tvdb-mcp server.
 
 Every log entry is written to stdout as a JSON object with three fields:
 ``severity``, ``message``, and ``metadata``. Entries whose severity is below

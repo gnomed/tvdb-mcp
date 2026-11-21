@@ -5,11 +5,13 @@ from unittest.mock import MagicMock, patch
 import fastmcp
 import pytest
 
-from thetvdb_mcp_server.config import AppConfig, LoggingConfig, ServerConfig, TvdbConfig
-from thetvdb_mcp_server.tools import (
+from tvdb_mcp_server.config import AppConfig, LoggingConfig, ServerConfig, TvdbConfig
+from tvdb_mcp_server.tools import (
     init_tools,
     tvdb_get_artwork,
     tvdb_get_episode,
+    tvdb_get_movie,
+    tvdb_get_movie_by_slug,
     tvdb_get_person,
     tvdb_get_season,
     tvdb_get_series,
@@ -30,10 +32,12 @@ def make_config() -> AppConfig:
 
 def register_tools(mcp, config, mock_client=None):
     """Register tools the same way main() does, for testing."""
-    with patch("thetvdb_mcp_server.tools.TvdbClient") as MockClient:
+    with patch("tvdb_mcp_server.tools.TvdbClient") as MockClient:
         MockClient.return_value = mock_client or MagicMock()
         init_tools(config)
 
+    mcp.tool(name="tvdb_get_movie")(tvdb_get_movie)
+    mcp.tool(name="tvdb_get_movie_by_slug")(tvdb_get_movie_by_slug)
     mcp.tool(name="tvdb_get_series")(tvdb_get_series)
     mcp.tool(name="tvdb_get_series_by_slug")(tvdb_get_series_by_slug)
     mcp.tool(name="tvdb_get_season")(tvdb_get_season)
@@ -51,6 +55,8 @@ async def get_registered_tool_names(mcp):
 
 
 EXPECTED_TOOL_NAMES = [
+    "tvdb_get_movie",
+    "tvdb_get_movie_by_slug",
     "tvdb_get_series",
     "tvdb_get_series_by_slug",
     "tvdb_get_season",
@@ -64,21 +70,21 @@ EXPECTED_TOOL_NAMES = [
 
 @pytest.mark.asyncio
 async def test_all_tools_registered() -> None:
-    """All 13 tools are registered."""
-    mcp = fastmcp.FastMCP("thetvdb-mcp-server")
+    """All 10 tools are registered."""
+    mcp = fastmcp.FastMCP("tvdb-mcp")
     register_tools(mcp, make_config())
 
     registered = await get_registered_tool_names(mcp)
 
     for tool_name in EXPECTED_TOOL_NAMES:
         assert tool_name in registered, f"Missing tool: {tool_name}"
-    assert len(registered) == 8
+    assert len(registered) == 10
 
 
 @pytest.mark.asyncio
 async def test_search_has_language_param() -> None:
     """tvdb_search has primary_language parameter."""
-    mcp = fastmcp.FastMCP("thetvdb-mcp-server")
+    mcp = fastmcp.FastMCP("tvdb-mcp")
     register_tools(mcp, make_config())
 
     tools = await mcp.list_tools()
@@ -90,7 +96,7 @@ async def test_search_has_language_param() -> None:
 @pytest.mark.asyncio
 async def test_episodes_has_language_param() -> None:
     """tvdb_get_series_episodes has lang parameter."""
-    mcp = fastmcp.FastMCP("thetvdb-mcp-server")
+    mcp = fastmcp.FastMCP("tvdb-mcp")
     register_tools(mcp, make_config())
 
     tools = await mcp.list_tools()
@@ -102,7 +108,7 @@ async def test_episodes_has_language_param() -> None:
 @pytest.mark.asyncio
 async def test_search_defaults() -> None:
     """tvdb_search has correct default limit."""
-    mcp = fastmcp.FastMCP("thetvdb-mcp-server")
+    mcp = fastmcp.FastMCP("tvdb-mcp")
     register_tools(mcp, make_config())
 
     tools = await mcp.list_tools()
@@ -115,7 +121,7 @@ async def test_search_defaults() -> None:
 @pytest.mark.asyncio
 async def test_episodes_defaults() -> None:
     """tvdb_get_series_episodes has correct default page."""
-    mcp = fastmcp.FastMCP("thetvdb-mcp-server")
+    mcp = fastmcp.FastMCP("tvdb-mcp")
     register_tools(mcp, make_config())
 
     tools = await mcp.list_tools()
@@ -127,7 +133,7 @@ async def test_episodes_defaults() -> None:
 @pytest.mark.asyncio
 async def test_series_extended_defaults() -> None:
     """tvdb_get_series_extended has correct default include_ params."""
-    mcp = fastmcp.FastMCP("thetvdb-mcp-server")
+    mcp = fastmcp.FastMCP("tvdb-mcp")
     register_tools(mcp, make_config())
 
     tools = await mcp.list_tools()

@@ -1,1 +1,0 @@
-"""thetvdb-mcp-server package."""

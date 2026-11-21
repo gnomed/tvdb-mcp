@@ -1,11 +1,11 @@
-"""MCP tool implementations for thetvdb-mcp-server."""
+"""MCP tool implementations for tvdb-mcp."""
 
 import logging
 from typing import Any
 
-from thetvdb_mcp_server.config import AppConfig
-from thetvdb_mcp_server.rate_limiter import tvdb_rate_limiter
-from thetvdb_mcp_server.tvdb_client import TvdbClient
+from tvdb_mcp_server.config import AppConfig
+from tvdb_mcp_server.rate_limiter import tvdb_rate_limiter
+from tvdb_mcp_server.tvdb_client import TvdbClient
 
 _logger = logging.getLogger(__name__)
 
@@ -51,7 +51,7 @@ async def tvdb_get_movie(
     include_awards: bool = False,
     include_releases: bool = False,
 ) -> dict[str, Any]:
-    """Fetch a movie extended record with optional characters, artworks, and trailers.
+    """Fetch a movie extended record by its numeric TVDB ID.
 
     The `characters`, `artworks`, `trailers`, `lists`, `tags`, `contentRatings`,
     `remoteIds`, `companies`, `awards`, and `releases` arrays are only included
@@ -183,8 +183,11 @@ async def tvdb_get_series_episodes(
 ) -> dict[str, Any]:
     """Fetch episodes for a series.
 
-    Returns ALL episodes for the series. To get a specific season's
-    episodes, filter the results client-side by seasonNumber.
+    Returns ALL episodes for the series (paginated via `page`). No
+    server-side season filtering — for a specific season's episodes,
+    use `tvdb_get_season` with `include_episodes=true` (get the season
+    ID from `tvdb_get_series` with `include_seasons=true`), or filter
+    results client-side by `seasonNumber`.
 
     Args:
         series_id: Numeric TVDB series ID.
@@ -229,11 +232,11 @@ async def tvdb_get_series(
     include_companies: bool = False,
     include_trailers: bool = False,
 ) -> dict[str, Any]:
-    """Fetch a series extended record with optional arrays.
+    """Fetch a series extended record by its numeric TVDB ID.
 
     The `characters`, `artworks`, `lists`, `tags`, `contentRatings`, `remoteIds`,
-    `companies`, and `trailers` arrays are only included when the respective
-    `include_*` parameter is True (or set to a non-"none" value).
+    `seasons`, `companies`, and `trailers` arrays are only included when the
+    respective `include_*` parameter is True (or set to a non-"none" value).
 
     TIP: The include_* options default to false and should be omitted to keep
     responses small. Only set them to true if you need the additional data.
