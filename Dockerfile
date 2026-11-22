@@ -19,6 +19,7 @@ RUN uv sync --frozen --no-dev
 EXPOSE 8080
 
 RUN mkdir /nobody_home && chmod -R 0777 /app /nobody_home
-ENV HOME=/nobody_home
 
-CMD ["uv", "run", "tvdb-mcp", "--config", "/config/config.toml"]
+USER nobody
+ENV HOME=/nobody_home
+CMD ["uv", "run", "--no-dev", "tvdb-mcp", "--config", "/config/config.toml"]
