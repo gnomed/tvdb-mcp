@@ -44,12 +44,15 @@ TVDB responses include a large amount of metadata which can cause context bloat 
    services:
      tvdb-mcp:
        image: ghcr.io/gnomed/tvdb-mcp:latest
+       user: "nobody:nogroup"
        ports:
          - "8080:8080"
        volumes:
          - ./config.toml:/config/config.toml:ro
        restart: unless-stopped
    ```
+
+   The `user: "nobody:nogroup"` line is recommended for security. The container can be run as any user id — adjust if your setup requires a specific one.
 
 2. Copy the example config and edit it:
 
