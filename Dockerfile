@@ -22,4 +22,4 @@ RUN uv sync --frozen --no-dev
 
 EXPOSE 8080
 
-CMD ["uv", "run", "--no-dev", "tvdb-mcp", "--config", "/config/config.toml"]
+CMD ["uv", "run", "--no-dev", "--no-sync", "tvdb-mcp", "--config", "/config/config.toml"]
