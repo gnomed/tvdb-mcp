@@ -44,7 +44,6 @@ TVDB responses include a large amount of metadata which can cause context bloat 
    services:
      tvdb-mcp:
        image: ghcr.io/gnomed/tvdb-mcp:latest
-       user: "nobody:nogroup"
        ports:
          - "8080:8080"
        volumes:
@@ -52,7 +51,7 @@ TVDB responses include a large amount of metadata which can cause context bloat 
        restart: unless-stopped
    ```
 
-   The `user: "nobody:nogroup"` line is recommended for security. The container can be run as any user id — adjust if your setup requires a specific one.
+   The container runs as the `nobody` user by default. The process runs fully in memory and only needs disk access to read the config at startup, so no writable volumes are required. You can override the user with a `user:` directive if your setup requires a specific user id.
 
 2. Copy the example config and edit it:
 
