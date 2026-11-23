@@ -3,7 +3,11 @@ FROM python:3.13-slim
 # Copy uv binary from the official image
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
+# Run as nobody
 WORKDIR /app
+RUN mkdir /nobody_home && chmod -R 0777 /app /nobody_home
+USER nobody
+ENV HOME=/nobody_home
 
 # Pre-compile bytecode for faster container startup
 ENV UV_COMPILE_BYTECODE=1
@@ -18,8 +22,4 @@ RUN uv sync --frozen --no-dev
 
 EXPOSE 8080
 
-RUN mkdir /nobody_home && chmod -R 0777 /app /nobody_home
-
-USER nobody
-ENV HOME=/nobody_home
 CMD ["uv", "run", "--no-dev", "tvdb-mcp", "--config", "/config/config.toml"]
